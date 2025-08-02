@@ -24,12 +24,19 @@
 - Workflow to read dataset and generate emails 
 - Sample replies created
 - Workflow to process the email and export changes
-
----
+- Workflow to process Images in attachments
 
 ### Current usages of Gemma3N:
 - Python Code to generate fake data (one time)
 - Context Creation (one time)
 - *Email Generation* based on data gaps (workflow)
 - *Email processing* based on user's reply (workflow)
+- (partial) usage of Gemma3 to interpret the image
+
+
+---
+
+## Challenges
+
+Ollama doesn't currently support Gemma3n image input. Updating the pipeline as-is (with Gemma3), and trying to find a work-around to use Gemma3n as well
 
