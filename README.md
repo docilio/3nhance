@@ -14,3 +14,22 @@
 - 🧪 500+ successful data operations in 30 days
 - ✅ Control bot to review and approve updates to DB
 
+
+---
+
+## Current Status
+
+- Sample dataset created (and saved into sqlite and csv)
+- Company context (to support the agent work and personalize outcome)
+- Workflow to read dataset and generate emails 
+- Sample replies created
+- Workflow to process the email and export changes
+
+---
+
+### Current usages of Gemma3N:
+- Python Code to generate fake data (one time)
+- Context Creation (one time)
+- *Email Generation* based on data gaps (workflow)
+- *Email processing* based on user's reply (workflow)
+
