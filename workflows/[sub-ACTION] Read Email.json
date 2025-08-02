@@ -1,0 +1,250 @@
+{
+  "name": "[sub-ACTION] Read Email",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "\n  {\n    \"reply\": \"Dear Luisa,\\n\\nThank you for reaching out.\\n\\nMy current job title is Senior Learning and Development Specialist.\\n\\nPlease let me know if you need any additional information.\\n\\nBest regards,\\nJimmy Ellis\",\n    \"from\": \"jturner@example.com\",\n    \"subject\": \"Request for Additional Information - Jimmy Ellis\",\n    \"context\": \"Your name is Luisa and you are a helpful assistant designed to close the data gap in our dataset.\\nContext: The company name is Blabla and it focus on training. It's based in Abu Dhabi (UAE)\\nTone: Professional and Polite tone for all conversations\\n\"\n  }"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        -128
+      ],
+      "id": "37162222-b08e-4e36-a21b-5aaddefcf619",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Based on this reply:\n\n{{ $('When Executed by Another Workflow').item.json.reply }}\n\nExtract the information from the email based on the missing fields ({{ $json.undefinedFields.toJsonString() }}) into a JSON array:\n[\n {\n  field: nameoffield1,\n  value: value from email\n },\n {\n  field: nameoffield2,\n  value: value from the email\n }...\n]\nDon't include anything else besides it.",
+        "options": {
+          "systemMessage": "={{ $('When Executed by Another Workflow').item.json.context }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        1120,
+        -128
+      ],
+      "id": "a20ca987-1d85-48f1-a823-3881bc24d6e2",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "gemma3n:latest",
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        96
+      ],
+      "id": "acda17e5-bd35-4ae4-85ac-a345f4d9170f",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "JhKZE0WSdYWgRAYL",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "06e78efc-cf5d-4be2-a8bd-20b79b70ea1e",
+              "name": "undefinedFields",
+              "value": "={{ $('Code').item.json.undefinedFields }}",
+              "type": "array"
+            },
+            {
+              "id": "cf2221c1-b4f9-478d-9022-3277f424d411",
+              "name": "output",
+              "value": "={{ $json.output.split(\"```json\")[1].split(\"```\")[0].parseJson() }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1520,
+        -128
+      ],
+      "id": "b9230ec8-0dfc-41e8-acc8-fede66afda22",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/demo/user_data.csv",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        224,
+        -128
+      ],
+      "id": "1dfacc17-5032-41e7-b6fb-00886f94f145",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        448,
+        -128
+      ],
+      "id": "370c757b-d421-4af3-8342-a96b719b5f3d",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "87c26b9a-ff7e-4829-b0db-afcf11152929",
+              "leftValue": "={{ $json.email.toLowerCase() }}",
+              "rightValue": "={{ $('When Executed by Another Workflow').item.json.from.toLowerCase() }}",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        672,
+        -128
+      ],
+      "id": "95943c4b-11f8-4b4f-8d51-69bf5227a0eb",
+      "name": "Filter Data of the Received Email"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const values = item.json;\n\n  const allFields = ['name', 'email', 'city', 'job', 'nationality', 'mobile_number', 'passport'];\n\n  const undefinedFields = allFields.filter(field => {\n    return (\n      !(field in values) ||\n      values[field] === \"\" ||\n      values[field] === null ||\n      values[field] === undefined\n    );\n  });\n\n  return {\n    json: {\n      ...values,\n      hasUndefined: undefinedFields.length > 0,\n      undefinedFields\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        896,
+        -128
+      ],
+      "id": "328f00d5-a3fe-4585-ab8e-b4158156ed75",
+      "name": "Code"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Filter Data of the Received Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Data of the Received Email": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8378ff92-fb0b-4e89-bc80-f85057f7de97",
+  "meta": {
+    "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"
+  },
+  "id": "0ETUajTRsYACIen1",
+  "tags": []
+}
