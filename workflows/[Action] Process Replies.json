@@ -58,120 +58,6 @@
         "assignments": {
           "assignments": [
             {
-              "id": "38b5fb70-94a3-4e85-80e4-4d7656183ad8",
-              "name": "reply",
-              "value": "={{ $json.reply }}",
-              "type": "string"
-            },
-            {
-              "id": "9829caea-8895-43f2-be20-ac67a757d449",
-              "name": "from",
-              "value": "={{ $json.from }}",
-              "type": "string"
-            },
-            {
-              "id": "de85a611-f54a-4934-b5fc-254ee9a6a5ed",
-              "name": "subject",
-              "value": "={{ $json.subject }}",
-              "type": "string"
-            },
-            {
-              "id": "94b3f673-a5b7-488b-acd5-e36d09443d7a",
-              "name": "context",
-              "value": "={{ $('ContextLoad').item.json.context }}",
-              "type": "string"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.set",
-      "typeVersion": 3.4,
-      "position": [
-        1664,
-        208
-      ],
-      "id": "cd518206-ce83-4f4f-a10d-1c3b234f82a8",
-      "name": "Edit Fields"
-    },
-    {
-      "parameters": {
-        "workflowId": {
-          "__rl": true,
-          "value": "0ETUajTRsYACIen1",
-          "mode": "list",
-          "cachedResultName": "[sub-ACTION] Read Email"
-        },
-        "workflowInputs": {
-          "mappingMode": "defineBelow",
-          "value": {
-            "reply": "={{ $json.reply }}",
-            "from": "={{ $json.from }}",
-            "subject": "={{ $json.subject }}",
-            "context": "={{ $json.context }}"
-          },
-          "matchingColumns": [],
-          "schema": [
-            {
-              "id": "reply",
-              "displayName": "reply",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "from",
-              "displayName": "from",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "subject",
-              "displayName": "subject",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "context",
-              "displayName": "context",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            }
-          ],
-          "attemptToConvertTypes": false,
-          "convertFieldsToString": true
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.executeWorkflow",
-      "typeVersion": 1.2,
-      "position": [
-        1888,
-        208
-      ],
-      "id": "5dff1d24-3d77-4f54-ad96-f737788dc760",
-      "name": "Execute Workflow"
-    },
-    {
-      "parameters": {
-        "assignments": {
-          "assignments": [
-            {
               "id": "6fd25d5a-7c0b-4e59-be7c-964c49326457",
               "name": "context",
               "value": "={{ $json.data }}",
@@ -247,8 +133,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        2112,
-        216
+        2448,
+        320
       ],
       "id": "f2df3f9b-c673-4eac-9242-d73fba0b8744",
       "name": "Edit Fields1"
@@ -276,11 +162,316 @@
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
       "position": [
-        1888,
-        0
+        1872,
+        -80
       ],
       "id": "06bb94d6-6cd8-4783-83b9-bf7aa30bf6bd",
       "name": "Read/Write Files from Disk1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a8130caa-b0e7-47eb-b774-4a3dee3b057e",
+              "leftValue": "={{ $json.attachment.toLowerCase() }}",
+              "rightValue": "yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1872,
+        208
+      ],
+      "id": "c3ab6894-0127-481b-b19f-b957656d35f8",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "hDCKKZ9hRkSOMXzi",
+          "mode": "list",
+          "cachedResultName": "[sub-ACTION] Describe Image"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "image": "/home/node/demo/sample_passport.jpg"
+          },
+          "matchingColumns": [
+            "image"
+          ],
+          "schema": [
+            {
+              "id": "image",
+              "displayName": "image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        2192,
+        160
+      ],
+      "id": "2114e602-22d0-4c12-9a08-d89243f990d8",
+      "name": "Describe Image"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "0ETUajTRsYACIen1",
+          "mode": "list",
+          "cachedResultName": "[sub-ACTION] Read Email"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "reply": "={{ $json.reply }}",
+            "from": "={{ $json.from }}",
+            "subject": "={{ $json.subject }}",
+            "context": "={{ $json.context }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "reply",
+              "displayName": "reply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "from",
+              "displayName": "from",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "context",
+              "displayName": "context",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        2192,
+        320
+      ],
+      "id": "5dff1d24-3d77-4f54-ad96-f737788dc760",
+      "name": "Extract Information from Email"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "0ETUajTRsYACIen1",
+          "mode": "list",
+          "cachedResultName": "[sub-ACTION] Read Email"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "reply": "={{ $('Details').item.json.reply }}",
+            "from": "={{ $('Details').item.json.from }}",
+            "subject": "={{ $('Details').item.json.subject }}",
+            "context": "={{ $('Details').item.json.context }}\nAttachement information:\n{{ $('Describe Image').item.json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "reply",
+              "displayName": "reply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "from",
+              "displayName": "from",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "context",
+              "displayName": "context",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        2448,
+        144
+      ],
+      "id": "a0d86a24-d4ba-4c6b-b032-0d28cd63f43e",
+      "name": "Extract Information from Email1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "38b5fb70-94a3-4e85-80e4-4d7656183ad8",
+              "name": "reply",
+              "value": "={{ $json.reply }}",
+              "type": "string"
+            },
+            {
+              "id": "9829caea-8895-43f2-be20-ac67a757d449",
+              "name": "from",
+              "value": "={{ $json.from }}",
+              "type": "string"
+            },
+            {
+              "id": "de85a611-f54a-4934-b5fc-254ee9a6a5ed",
+              "name": "subject",
+              "value": "={{ $json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "94b3f673-a5b7-488b-acd5-e36d09443d7a",
+              "name": "context",
+              "value": "={{ $('ContextLoad').item.json.context }}",
+              "type": "string"
+            },
+            {
+              "id": "bfa98974-ad2d-4db0-a0c1-f45a783eb5f7",
+              "name": "attachment",
+              "value": "={{$json.attachment}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1664,
+        208
+      ],
+      "id": "cd518206-ce83-4f4f-a10d-1c3b234f82a8",
+      "name": "Details"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "39f6dd06-f241-4f24-90f1-f84b3c7d4d82",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "array"
+            },
+            {
+              "id": "3faa03d0-cc9c-42b8-94b9-b011be6ccf5f",
+              "name": "undefinedFields",
+              "value": "={{ $json.undefinedFields }}",
+              "type": "array"
+            },
+            {
+              "id": "b5070d84-2b91-4d97-82b9-4663e9a6e077",
+              "name": "attachment",
+              "value": "={{ $('Loop Over Items').item.json.attachment }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2704,
+        320
+      ],
+      "id": "733b4f5c-4349-477d-a9a2-e910c57fa736",
+      "name": "Edit Fields"
     }
   ],
   "pinData": {},
@@ -329,18 +520,7 @@
         ],
         [
           {
-            "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Edit Fields": {
-      "main": [
-        [
-          {
-            "node": "Execute Workflow",
+            "node": "Details",
             "type": "main",
             "index": 0
           }
@@ -380,17 +560,6 @@
         ]
       ]
     },
-    "Execute Workflow": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Edit Fields1": {
       "main": [
         [
@@ -412,13 +581,86 @@
           }
         ]
       ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Describe Image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Information from Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Information from Email": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Describe Image": {
+      "main": [
+        [
+          {
+            "node": "Extract Information from Email1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Details": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Information from Email1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "2c64efbd-15ef-4d6c-bd64-787c6336cf8b",
+  "versionId": "53eb10af-1738-49d2-880f-12279cf0e81d",
   "meta": {
     "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"
   },
