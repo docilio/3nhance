@@ -329,10 +329,10 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "reply": "={{ $('Details').item.json.reply }}",
+            "reply": "={{ $('Details').item.json.reply }}\n\n---\nUse the attachement information as well:\n{{ $('Describe Image').item.json.output.toJsonString() }}",
             "from": "={{ $('Details').item.json.from }}",
             "subject": "={{ $('Details').item.json.subject }}",
-            "context": "={{ $('Details').item.json.context }}\nAttachement information:\n{{ $('Describe Image').item.json.output }}"
+            "context": "={{ $('Details').item.json.context }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -660,7 +660,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "53eb10af-1738-49d2-880f-12279cf0e81d",
+  "versionId": "4a9e8f44-3072-4ab3-8a64-657387cad1fe",
   "meta": {
     "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"
   },
