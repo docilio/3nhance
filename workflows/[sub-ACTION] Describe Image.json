@@ -1,0 +1,124 @@
+{
+  "name": "[sub-ACTION] Describe Image",
+  "nodes": [
+    {
+      "parameters": {
+        "fileSelector": "={{ $json.image }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        128,
+        -96
+      ],
+      "id": "71f73c74-e0e4-4c41-a05a-dd700aff1195",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "model": "gemma3:12b",
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        352,
+        128
+      ],
+      "id": "5bbfcff4-3bb7-429f-b20e-71b58e077dd5",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "JhKZE0WSdYWgRAYL",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Describe",
+        "options": {
+          "passthroughBinaryImages": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        352,
+        -96
+      ],
+      "id": "83b82c37-8f35-48ca-a2e6-f75bf4cb3da5",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "image"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -96,
+        -96
+      ],
+      "id": "b7700e96-5c5c-4fcf-b4e7-1f65d853d977",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e2069f78-d202-4b76-90f4-4c0781a678b4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"
+  },
+  "id": "hDCKKZ9hRkSOMXzi",
+  "tags": []
+}
