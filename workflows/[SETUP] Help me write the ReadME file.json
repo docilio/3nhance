@@ -1,0 +1,89 @@
+{
+  "name": "[SETUP] Help me write the ReadME file",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "965a442b-cc03-42af-92d0-da627c5b5534",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Help me writting a README file for this project: \n\n3Nhance is an AI-powered offline agent that enhances structured data using replies from users via email — including natural text and attached documents or images.",
+        "options": {
+          "systemMessage": "You are a helpful assistant"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "9edfa0ef-aa27-4d4d-bd5f-e93ea663973e",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "gemma3n:latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        208,
+        224
+      ],
+      "id": "36484ff6-e60d-4498-b830-6b167690726a",
+      "name": "Ollama Chat Model",
+      "credentials": {
+        "ollamaApi": {
+          "id": "JhKZE0WSdYWgRAYL",
+          "name": "Ollama account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "47bb1004-6927-4193-bdc9-1bd0627ca3fa",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"
+  },
+  "id": "cb4T5v579n2Xy0kb",
+  "tags": []
+}
