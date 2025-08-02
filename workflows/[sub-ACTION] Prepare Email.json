@@ -4,7 +4,7 @@
     {
       "parameters": {
         "inputSource": "jsonExample",
-        "jsonExample": "  {\n    \"name\": \"Jimmy Ellis\",\n    \"email\": \"jturner@example.com\",\n    \"city\": \"West Tracy\",\n    \"nationality\": \"Andorra\",\n    \"mobile_number\": \"424-801-3706\",\n    \"passport\": \"eE943781\",\n    \"hasUndefined\": true,\n    \"undefinedFields\": [\n      \"job\"\n    ]\n  }"
+        "jsonExample": "{  \"user\":\n  {\n    \"name\": \"Jimmy Ellis\",\n    \"email\": \"jturner@example.com\",\n    \"city\": \"West Tracy\",\n    \"nationality\": \"Andorra\",\n    \"mobile_number\": \"424-801-3706\",\n    \"passport\": \"eE943781\",\n    \"hasUndefined\": true,\n    \"undefinedFields\": [\n      \"job\"\n    ]\n  },\n  \"context\": \"agent context\"  \n}"
       },
       "type": "n8n-nodes-base.executeWorkflowTrigger",
       "typeVersion": 1.1,
@@ -18,15 +18,15 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Based on this information:\n\n{{ $json.toJsonString() }}\n\nCreate an email to request the missing fields (without signature). Do not add anything else besides JSON:\n{\n  subject: emailsubject,\n  email: content without signature\n}",
+        "text": "=Based on this information:\n\n{{ $('When Executed by Another Workflow').item.json.user.toJsonString() }}\n\nCreate an email to request the missing fields (without signature). Do not add anything else besides JSON:\n{\n  subject: emailsubject,\n  email: content without signature\n}",
         "options": {
-          "systemMessage": "Your name is Luisa and you are a helpful assistant designed to close the data gap in our dataset.\nContext: The company name is Blabla and it focus on training. It's based in Abu Dhabi"
+          "systemMessage": "={{ $json.data }}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.1,
       "position": [
-        208,
+        624,
         0
       ],
       "id": "beda22a0-dd3a-4cbf-b1a9-0f511c32a23a",
@@ -42,7 +42,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
       "typeVersion": 1,
       "position": [
-        208,
+        624,
         192
       ],
       "id": "cc6c9a49-8302-4599-8e56-1d4a4cd7aee2",
@@ -71,7 +71,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        560,
+        976,
         0
       ],
       "id": "635a328c-c2fd-4d93-8ebd-514f698581df",
@@ -86,20 +86,68 @@
       "type": "n8n-nodes-base.markdown",
       "typeVersion": 1,
       "position": [
-        768,
+        1184,
         0
       ],
       "id": "6bc3dbd3-dce3-4cac-87b9-bde7969e17e4",
       "name": "Markdown"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/demo/context.txt",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "98507d72-f4ee-4056-96d6-fa4f845eb287",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "24c3b2dd-273e-4b83-a306-a922f6eeab52",
+      "name": "Extract from File"
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "user": {
+            "name": "Jimmy Ellis",
+            "email": "jturner@example.com",
+            "city": "West Tracy",
+            "nationality": "Andorra",
+            "mobile_number": "424-801-3706",
+            "passport": "eE943781",
+            "hasUndefined": true,
+            "undefinedFields": [
+              "job"
+            ]
+          },
+          "context": "Your name is Luisa and you are a helpful assistant designed to close the data gap in our dataset.\nContext: The company name is Blabla and it focus on training. It's based in Abu Dhabi (UAE)\nTone: Professional and Polite tone for all conversations\n"
+        }
+      }
+    ]
+  },
   "connections": {
     "When Executed by Another Workflow": {
       "main": [
         [
           {
-            "node": "AI Agent",
+            "node": "Read/Write Files from Disk",
             "type": "main",
             "index": 0
           }
@@ -138,13 +186,35 @@
           }
         ]
       ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "8e9ec98a-c8bf-45df-8ba9-d9b497056e7d",
+  "versionId": "da133cc9-997a-4b37-860d-9be3d2d01f79",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"

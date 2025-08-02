@@ -6,8 +6,8 @@
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        0,
-        0
+        224,
+        16
       ],
       "id": "877a330b-b924-4520-9390-fe7248b98254",
       "name": "When clicking ‘Execute workflow’"
@@ -20,8 +20,8 @@
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
       "position": [
-        224,
-        0
+        1120,
+        16
       ],
       "id": "a07c0260-2320-46da-a3dd-043e1ccbce67",
       "name": "Read/Write Files from Disk"
@@ -33,8 +33,8 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        448,
-        0
+        1344,
+        16
       ],
       "id": "9645f9a3-526d-47b5-b40a-566c6118f39b",
       "name": "Extract from File"
@@ -67,8 +67,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        672,
-        0
+        1568,
+        16
       ],
       "id": "a190e028-35bc-4b7a-914e-4014d303c3e4",
       "name": "Filter Empty Emails"
@@ -80,8 +80,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        896,
-        0
+        1792,
+        16
       ],
       "id": "ebdb189b-7e6a-44a8-9ed6-3f0164f0f137",
       "name": "Code"
@@ -115,8 +115,8 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        1120,
-        0
+        2016,
+        16
       ],
       "id": "86973dd6-eeca-4a02-9c89-c0021290fe7b",
       "name": "Filter"
@@ -128,8 +128,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        1344,
-        0
+        2240,
+        16
       ],
       "id": "d51c1699-264c-4295-b615-967482e98cc5",
       "name": "Loop Over Items"
@@ -140,91 +140,34 @@
           "__rl": true,
           "value": "bmQbrbKmgq7pQv24",
           "mode": "list",
-          "cachedResultName": "[ACTION] Prepare Email"
+          "cachedResultName": "[sub-ACTION] Prepare Email"
         },
         "workflowInputs": {
           "mappingMode": "defineBelow",
-          "value": {},
+          "value": {
+            "user": "={{ $('Loop Over Items').item.json }}",
+            "context": "={{ $('ContextLoad').item.json.context }}"
+          },
           "matchingColumns": [],
           "schema": [
             {
-              "id": "name",
-              "displayName": "name",
+              "id": "user",
+              "displayName": "user",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            },
+            {
+              "id": "context",
+              "displayName": "context",
               "required": false,
               "defaultMatch": false,
               "display": true,
               "canBeUsedToMatch": true,
               "type": "string",
-              "removed": false
-            },
-            {
-              "id": "email",
-              "displayName": "email",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "city",
-              "displayName": "city",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "nationality",
-              "displayName": "nationality",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "mobile_number",
-              "displayName": "mobile_number",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "passport",
-              "displayName": "passport",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "string",
-              "removed": false
-            },
-            {
-              "id": "hasUndefined",
-              "displayName": "hasUndefined",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "boolean",
-              "removed": false
-            },
-            {
-              "id": "undefinedFields",
-              "displayName": "undefinedFields",
-              "required": false,
-              "defaultMatch": false,
-              "display": true,
-              "canBeUsedToMatch": true,
-              "type": "array",
               "removed": false
             }
           ],
@@ -236,8 +179,8 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        1584,
-        80
+        2464,
+        32
       ],
       "id": "29118ff4-fda1-4f63-ae75-f9987b9bdbab",
       "name": "Draft_Email"
@@ -248,7 +191,7 @@
           "assignments": [
             {
               "id": "2758f93e-6c5e-41ca-bfa4-44c9a183c8a5",
-              "name": "email",
+              "name": "to",
               "value": "={{ $('Loop Over Items').item.json.email }}",
               "type": "string"
             },
@@ -271,8 +214,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1792,
-        80
+        2688,
+        96
       ],
       "id": "2f3ec869-e0ad-480f-b789-076e7ae3b7d7",
       "name": "Edit Fields"
@@ -285,8 +228,8 @@
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
-        1552,
-        -96
+        2464,
+        -176
       ],
       "id": "de3dac0c-a0b3-4b2a-9d1e-7760e4084694",
       "name": "Convert to File"
@@ -300,11 +243,62 @@
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
       "position": [
-        1760,
+        2688,
         -176
       ],
       "id": "b96f1ca3-a0ec-45a4-a3e0-d47c97cb3a68",
       "name": "Read/Write Files from Disk1"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/demo/context.txt",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        448,
+        16
+      ],
+      "id": "420f9eff-a8f0-43fc-a7e9-0c3b00d7c5f7",
+      "name": "Read/Write Files from Disk2"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        672,
+        16
+      ],
+      "id": "49fb1860-20dd-4e8c-b6a2-542b53cc0419",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6fd25d5a-7c0b-4e59-be7c-964c49326457",
+              "name": "context",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        896,
+        16
+      ],
+      "id": "0eb820c7-22b9-4a96-8928-8ecc4561ecc2",
+      "name": "ContextLoad"
     }
   ],
   "pinData": {},
@@ -313,7 +307,7 @@
       "main": [
         [
           {
-            "node": "Read/Write Files from Disk",
+            "node": "Read/Write Files from Disk2",
             "type": "main",
             "index": 0
           }
@@ -425,13 +419,46 @@
           }
         ]
       ]
+    },
+    "Read/Write Files from Disk2": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "ContextLoad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ContextLoad": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "418d6e26-7ef3-4a25-9c74-86653ab01a00",
+  "versionId": "c9330475-b474-43b8-805d-86ae6cb0720d",
   "meta": {
     "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"
   },
