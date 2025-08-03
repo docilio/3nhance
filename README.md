@@ -25,6 +25,7 @@
 - Sample replies created
 - Workflow to process the email and export changes
 - Workflow to process Images in attachments
+- Merge between previous workflows and GMAIL for email send/read
 
 ### Current usages of Gemma3N:
 - Python Code to generate fake data (one time)
@@ -32,11 +33,28 @@
 - *Email Generation* based on data gaps (workflow)
 - *Email processing* based on user's reply (workflow)
 - (partial) usage of Gemma3 to interpret the image
-
+- (offline) Gemma3n is reading the image in python locally, but not as part of Ollama (yet)
 
 ---
 
 ## Challenges
 
-Ollama doesn't currently support Gemma3n image input. Updating the pipeline as-is (with Gemma3), and trying to find a work-around to use Gemma3n as well
+> Ollama doesn't currently support Gemma3n image input. Updating the pipeline as-is (with Gemma3), and trying to find a work-around to use Gemma3n as well as part of the pipeline.
+> Colab is not supporting the free load of Gemma3N, finding alternatives for the live demo.
+
+
+--- 
+
+##Context
+
+This is part of Google Gemma 3n Hackathon
+
+@misc{google-gemma-3n-hackathon,
+    author = {Glenn Cameron and Omar Sanseviero and Gus Martins and Ian Ballantyne and Kat Black and Mark Sherwood and Milen Ferev and Ronghui Zhu and Nilay Chauhan and Pulkit Bhuwalka and Emily Kosa and Addison Howard},
+    title = {Google - The Gemma 3n Impact Challenge},
+    year = {2025},
+    howpublished = {\url{https://kaggle.com/competitions/google-gemma-3n-hackathon}},
+    note = {Kaggle}
+}
+
 
