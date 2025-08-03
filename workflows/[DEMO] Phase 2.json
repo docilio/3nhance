@@ -1,0 +1,651 @@
+{
+  "name": "[DEMO] Phase 2",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2096,
+        200
+      ],
+      "id": "a72ce085-755b-4858-8406-cce99b0ca86d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -976,
+        200
+      ],
+      "id": "50aa77e5-cb94-4b72-a5f2-202246e42e89",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6fd25d5a-7c0b-4e59-be7c-964c49326457",
+              "name": "context",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1424,
+        200
+      ],
+      "id": "73f42b33-02c3-4b6a-8e67-dc30328b8327",
+      "name": "ContextLoad"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/demo/context.txt",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -1872,
+        200
+      ],
+      "id": "eb97f78c-25c9-446b-8def-a92d28c9c6dd",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -1648,
+        200
+      ],
+      "id": "05163a7e-e879-498d-ba05-a46528c0ebdc",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "39f6dd06-f241-4f24-90f1-f84b3c7d4d82",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "array"
+            },
+            {
+              "id": "3faa03d0-cc9c-42b8-94b9-b011be6ccf5f",
+              "name": "undefinedFields",
+              "value": "={{ $json.undefinedFields }}",
+              "type": "array"
+            },
+            {
+              "id": "b5070d84-2b91-4d97-82b9-4663e9a6e077",
+              "name": "attachment",
+              "value": "={{ $('Loop Over Items').item.json.attachment }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -80,
+        224
+      ],
+      "id": "666ec99b-a34c-4ebe-acd6-08bb77491ec3",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -752,
+        -64
+      ],
+      "id": "b03cc924-fa58-4189-92de-f11867bff634",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/home/node/demo/live_process.json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -528,
+        -64
+      ],
+      "id": "4dd01563-763f-4e9f-8aa5-197f210a2b92",
+      "name": "Read/Write Files from Disk1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a8130caa-b0e7-47eb-b774-4a3dee3b057e",
+              "leftValue": "={{ $json.attachment.toLowerCase() }}",
+              "rightValue": "yes",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -528,
+        128
+      ],
+      "id": "64c56666-cc86-472f-a2dd-03fe5d73001e",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "hDCKKZ9hRkSOMXzi",
+          "mode": "list",
+          "cachedResultName": "[sub-ACTION] Describe Image"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "image": "/home/node/demo/sample_passport.jpg"
+          },
+          "matchingColumns": [
+            "image"
+          ],
+          "schema": [
+            {
+              "id": "image",
+              "displayName": "image",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -304,
+        32
+      ],
+      "id": "2049024f-9b6c-4c0d-b9db-a8cd534f235c",
+      "name": "Describe Image"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "N2hlgk4HU8nVqtPZ",
+          "mode": "list",
+          "cachedResultName": "[DEMO] Collect Live Data"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "reply": "={{ $json.reply }}",
+            "from": "={{ $json.from }}",
+            "subject": "={{ $json.from }}",
+            "context": "={{ $json.context }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "reply",
+              "displayName": "reply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "from",
+              "displayName": "from",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "context",
+              "displayName": "context",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -304,
+        224
+      ],
+      "id": "0669ba91-9923-4817-a1f9-c35fc0488b60",
+      "name": "Extract Information from Email"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "38b5fb70-94a3-4e85-80e4-4d7656183ad8",
+              "name": "reply",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "9829caea-8895-43f2-be20-ac67a757d449",
+              "name": "from",
+              "value": "={{ $json.from.value[0].address }}",
+              "type": "string"
+            },
+            {
+              "id": "de85a611-f54a-4934-b5fc-254ee9a6a5ed",
+              "name": "subject",
+              "value": "={{ $json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "94b3f673-a5b7-488b-acd5-e36d09443d7a",
+              "name": "context",
+              "value": "={{ $('ContextLoad').item.json.context }}",
+              "type": "string"
+            },
+            {
+              "id": "bfa98974-ad2d-4db0-a0c1-f45a783eb5f7",
+              "name": "attachment",
+              "value": "=NO",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -752,
+        128
+      ],
+      "id": "400a91ba-a13a-4099-bdef-0315c1366c5c",
+      "name": "Details"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "39f6dd06-f241-4f24-90f1-f84b3c7d4d82",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "array"
+            },
+            {
+              "id": "3faa03d0-cc9c-42b8-94b9-b011be6ccf5f",
+              "name": "undefinedFields",
+              "value": "={{ $json.undefinedFields }}",
+              "type": "array"
+            },
+            {
+              "id": "b5070d84-2b91-4d97-82b9-4663e9a6e077",
+              "name": "attachment",
+              "value": "={{ $('Loop Over Items').item.json.attachment }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        144,
+        200
+      ],
+      "id": "aa0dc9e9-e22e-4d26-98f2-c1f0fdbe686b",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 5,
+        "simple": false,
+        "filters": {
+          "readStatus": "unread"
+        },
+        "options": {
+          "downloadAttachments": true
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -1200,
+        208
+      ],
+      "id": "5308087b-6f27-44cb-a799-d33d690df836",
+      "name": "Get many messages",
+      "webhookId": "0e0be70e-7588-4ba3-925b-e8dcfe660e70",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1mqqwkXixpUMU3z0",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "N2hlgk4HU8nVqtPZ",
+          "mode": "list",
+          "cachedResultName": "[DEMO] Collect Live Data"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "reply": "={{ $json.reply }}",
+            "from": "={{ $json.from }}",
+            "subject": "={{ $json.from }}",
+            "context": "={{ $json.context }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "reply",
+              "displayName": "reply",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "from",
+              "displayName": "from",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "context",
+              "displayName": "context",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -32,
+        -16
+      ],
+      "id": "0d4bf4c8-9aeb-48bb-8d07-fb36a0ad1d86",
+      "name": "Extract Information from Email1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Details",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ContextLoad": {
+      "main": [
+        [
+          {
+            "node": "Get many messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "ContextLoad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Describe Image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract Information from Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Describe Image": {
+      "main": [
+        [
+          {
+            "node": "Extract Information from Email1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Information from Email": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Details": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many messages": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Information from Email1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "93f31264-41b6-4114-9d26-ac23b2a1675f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"
+  },
+  "id": "xStrvIiJVHh5VVVB",
+  "tags": []
+}

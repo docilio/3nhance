@@ -1,0 +1,569 @@
+{
+  "name": "[DEMO] Phase 1",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1920,
+        384
+      ],
+      "id": "526d8fcb-9945-41ce-80ef-1d2ab7896f3a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/demo/live_data.csv",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -1024,
+        384
+      ],
+      "id": "95943610-a524-4674-b071-e42092a34050",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -800,
+        384
+      ],
+      "id": "5c44354b-bdf3-4d3a-90af-c922606457cd",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "87c26b9a-ff7e-4829-b0db-afcf11152929",
+              "leftValue": "={{ $json.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -576,
+        384
+      ],
+      "id": "68d183ef-85b2-477c-a09d-87bc451046c1",
+      "name": "Filter Empty Emails"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  const values = item.json;\n\n  const allFields = ['name', 'email', 'city', 'job', 'nationality', 'mobile_number', 'passport'];\n\n  const undefinedFields = allFields.filter(field => {\n    return (\n      !(field in values) ||\n      values[field] === \"\" ||\n      values[field] === null ||\n      values[field] === undefined\n    );\n  });\n\n  return {\n    json: {\n      ...values,\n      hasUndefined: undefinedFields.length > 0,\n      undefinedFields\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -352,
+        384
+      ],
+      "id": "a9b3ec96-691a-43f4-99f1-53fe4d6a9c50",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "0d7c800a-e397-4351-9771-9b464e5cffd6",
+              "leftValue": "={{ $json.hasUndefined }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -128,
+        384
+      ],
+      "id": "e080b417-a8dc-46ca-b764-67ed5321081d",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        96,
+        384
+      ],
+      "id": "2be79fde-017b-48a0-9f41-38a11d5ba495",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "bmQbrbKmgq7pQv24",
+          "mode": "list",
+          "cachedResultName": "[sub-ACTION] Prepare Email"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user": "={{ $('Loop Over Items').item.json }}",
+            "context": "={{ $('ContextLoad').item.json.context }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "user",
+              "displayName": "user",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "object",
+              "removed": false
+            },
+            {
+              "id": "context",
+              "displayName": "context",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        384
+      ],
+      "id": "e4048bd5-8a73-469d-935c-19665792fee9",
+      "name": "Draft_Email"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2758f93e-6c5e-41ca-bfa4-44c9a183c8a5",
+              "name": "to",
+              "value": "={{ $('Loop Over Items').item.json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "c3d75fae-d26d-4a6f-a7f1-7a655e52a62b",
+              "name": "subject",
+              "value": "={{ $json.output.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "acf72ff0-eeca-4a59-b17b-c72815b1cd27",
+              "name": "email",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        544,
+        384
+      ],
+      "id": "fc148665-6b0b-4ca8-8516-b45d85cb4db6",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        320,
+        192
+      ],
+      "id": "fe22acca-1a6e-467b-b004-9e06ab664942",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/home/node/demo/live_emails.xlsx",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        544,
+        192
+      ],
+      "id": "50203a93-ddd3-450d-aea3-8480fecd2cdf",
+      "name": "Read/Write Files from Disk1"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/home/node/demo/context.txt",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -1696,
+        384
+      ],
+      "id": "ea4d2fd1-3d24-49f1-bc4a-60b842de595b",
+      "name": "Read/Write Files from Disk2"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -1472,
+        384
+      ],
+      "id": "713d7dc1-4e8d-471f-8b0c-2063ffb8388e",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6fd25d5a-7c0b-4e59-be7c-964c49326457",
+              "name": "context",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1248,
+        384
+      ],
+      "id": "417acbe3-a7e3-4d60-9a05-42448b448779",
+      "name": "ContextLoad"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.to }}",
+        "subject": "={{ $json.subject }}",
+        "message": "={{ $json.email }}",
+        "options": {
+          "appendAttribution": false,
+          "senderName": "Luisa"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        768,
+        384
+      ],
+      "id": "d3132ea6-6347-4abc-8c22-a8604beb55f8",
+      "name": "Send a message",
+      "webhookId": "7a545e4a-de14-45ca-9a74-0e2e765d1293",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1mqqwkXixpUMU3z0",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "72603226-8eae-4427-ab13-956f5e6f524a",
+              "name": "to",
+              "value": "={{ $('Edit Fields').item.json.to }}",
+              "type": "string"
+            },
+            {
+              "id": "4529f463-9be9-4c79-a006-26b058aba6a0",
+              "name": "subject",
+              "value": "={{ $('Edit Fields').item.json.subject }}",
+              "type": "string"
+            },
+            {
+              "id": "d56b47a8-4c41-4988-9441-7d23e3e7a35b",
+              "name": "email",
+              "value": "={{ $('Edit Fields').item.json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "0c04a872-98ce-4729-8192-1734764ed71d",
+              "name": "id",
+              "value": "={{ $json.id }}",
+              "type": "string"
+            },
+            {
+              "id": "0ac6aa4a-7e32-4385-978d-63d13ddccafd",
+              "name": "status",
+              "value": "={{ $json.labelIds[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "f5b7d3df-a023-469a-8903-5694e2b2038d",
+              "name": "time",
+              "value": "={{ $now.format('hh:mm:ss @ dd-MM-yyyy') }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        992,
+        456
+      ],
+      "id": "8b8a4657-1471-4912-9485-1b8be9560cf5",
+      "name": "Edit Fields1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Filter Empty Emails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Empty Emails": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Draft_Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft_Email": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk2": {
+      "main": [
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "ContextLoad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ContextLoad": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0035197d-a39b-482a-8ad8-2faa5fafa100",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"
+  },
+  "id": "OpNRdpqpa2hwbLTc",
+  "tags": []
+}
