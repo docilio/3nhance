@@ -7,7 +7,7 @@
       "typeVersion": 1,
       "position": [
         -2096,
-        200
+        120
       ],
       "id": "a72ce085-755b-4858-8406-cce99b0ca86d",
       "name": "When clicking ‘Execute workflow’"
@@ -20,7 +20,7 @@
       "typeVersion": 3,
       "position": [
         -976,
-        200
+        120
       ],
       "id": "50aa77e5-cb94-4b72-a5f2-202246e42e89",
       "name": "Loop Over Items"
@@ -43,7 +43,7 @@
       "typeVersion": 3.4,
       "position": [
         -1424,
-        200
+        120
       ],
       "id": "73f42b33-02c3-4b6a-8e67-dc30328b8327",
       "name": "ContextLoad"
@@ -57,7 +57,7 @@
       "typeVersion": 1,
       "position": [
         -1872,
-        200
+        120
       ],
       "id": "eb97f78c-25c9-446b-8def-a92d28c9c6dd",
       "name": "Read/Write Files from Disk"
@@ -71,7 +71,7 @@
       "typeVersion": 1,
       "position": [
         -1648,
-        200
+        120
       ],
       "id": "05163a7e-e879-498d-ba05-a46528c0ebdc",
       "name": "Extract from File"
@@ -81,10 +81,10 @@
         "assignments": {
           "assignments": [
             {
-              "id": "39f6dd06-f241-4f24-90f1-f84b3c7d4d82",
-              "name": "output",
-              "value": "={{ $json.output }}",
-              "type": "array"
+              "id": "b88ba180-99b5-442b-9ba0-6ec203d720fa",
+              "name": "from",
+              "value": "={{ $('Details').item.json.from }}",
+              "type": "string"
             },
             {
               "id": "3faa03d0-cc9c-42b8-94b9-b011be6ccf5f",
@@ -93,9 +93,15 @@
               "type": "array"
             },
             {
-              "id": "b5070d84-2b91-4d97-82b9-4663e9a6e077",
-              "name": "attachment",
-              "value": "={{ $('Loop Over Items').item.json.attachment }}",
+              "id": "39f6dd06-f241-4f24-90f1-f84b3c7d4d82",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "array"
+            },
+            {
+              "id": "e11bf6ef-cab5-4706-9931-3d8eda93a9a7",
+              "name": "email_id",
+              "value": "={{ $('Details').item.json.id }}",
               "type": "string"
             }
           ]
@@ -106,7 +112,7 @@
       "typeVersion": 3.4,
       "position": [
         -80,
-        224
+        240
       ],
       "id": "666ec99b-a34c-4ebe-acd6-08bb77491ec3",
       "name": "Edit Fields1"
@@ -120,7 +126,7 @@
       "typeVersion": 1.1,
       "position": [
         -752,
-        -64
+        -336
       ],
       "id": "b03cc924-fa58-4189-92de-f11867bff634",
       "name": "Convert to File"
@@ -134,8 +140,8 @@
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
       "position": [
-        -528,
-        -64
+        -544,
+        -336
       ],
       "id": "4dd01563-763f-4e9f-8aa5-197f210a2b92",
       "name": "Read/Write Files from Disk1"
@@ -152,12 +158,12 @@
           "conditions": [
             {
               "id": "a8130caa-b0e7-47eb-b774-4a3dee3b057e",
-              "leftValue": "={{ $json.attachment.toLowerCase() }}",
-              "rightValue": "yes",
+              "leftValue": "={{ $json.attachment }}",
+              "rightValue": "={{ $('Details').item.json.id }}",
               "operator": {
-                "type": "string",
-                "operation": "equals",
-                "name": "filter.operator.equals"
+                "type": "object",
+                "operation": "notEmpty",
+                "singleValue": true
               }
             }
           ],
@@ -170,7 +176,7 @@
       "typeVersion": 2.2,
       "position": [
         -528,
-        128
+        48
       ],
       "id": "64c56666-cc86-472f-a2dd-03fe5d73001e",
       "name": "If"
@@ -186,7 +192,7 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "image": "/home/node/demo/sample_passport.jpg"
+            "image": "={{ $json.fileName }}"
           },
           "matchingColumns": [
             "image"
@@ -211,8 +217,8 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        -304,
-        32
+        144,
+        -144
       ],
       "id": "2049024f-9b6c-4c0d-b9db-a8cd534f235c",
       "name": "Describe Image"
@@ -228,10 +234,10 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "reply": "={{ $json.reply }}",
-            "from": "={{ $json.from }}",
-            "subject": "={{ $json.from }}",
-            "context": "={{ $json.context }}"
+            "reply": "={{ $('Details').item.json.reply }}",
+            "from": "={{ $('Details').item.json.from }}",
+            "subject": "={{ $('Details').item.json.subject }}",
+            "context": "={{ $('Details').item.json.context }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -281,7 +287,7 @@
       "typeVersion": 1.2,
       "position": [
         -304,
-        224
+        144
       ],
       "id": "0669ba91-9923-4817-a1f9-c35fc0488b60",
       "name": "Extract Information from Email"
@@ -315,10 +321,16 @@
               "type": "string"
             },
             {
-              "id": "bfa98974-ad2d-4db0-a0c1-f45a783eb5f7",
-              "name": "attachment",
-              "value": "=NO",
+              "id": "d33a0c52-931b-4d16-a8c0-62caef87cfef",
+              "name": "id",
+              "value": "={{ $json.id }}",
               "type": "string"
+            },
+            {
+              "id": "f08680e2-de33-4c65-af58-40671ad29229",
+              "name": "attachment",
+              "value": "={{ $('Get many messages').item.binary }}",
+              "type": "object"
             }
           ]
         },
@@ -328,7 +340,7 @@
       "typeVersion": 3.4,
       "position": [
         -752,
-        128
+        48
       ],
       "id": "400a91ba-a13a-4099-bdef-0315c1366c5c",
       "name": "Details"
@@ -362,8 +374,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        144,
-        200
+        592,
+        336
       ],
       "id": "aa0dc9e9-e22e-4d26-98f2-c1f0fdbe686b",
       "name": "Edit Fields"
@@ -384,7 +396,7 @@
       "typeVersion": 2.1,
       "position": [
         -1200,
-        208
+        120
       ],
       "id": "5308087b-6f27-44cb-a799-d33d690df836",
       "name": "Get many messages",
@@ -407,10 +419,10 @@
         "workflowInputs": {
           "mappingMode": "defineBelow",
           "value": {
-            "reply": "={{ $json.reply }}",
-            "from": "={{ $json.from }}",
-            "subject": "={{ $json.from }}",
-            "context": "={{ $json.context }}"
+            "reply": "={{ $('Details').item.json.reply }}\n---\nAttachment Information (JSON):\n{{ $json.output.toJsonString() }}",
+            "from": "={{ $('Details').item.json.from }}",
+            "subject": "={{ $('Details').item.json.subject }}",
+            "context": "={{ $('Details').item.json.context }}"
           },
           "matchingColumns": [],
           "schema": [
@@ -459,11 +471,87 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        -32,
-        -16
+        368,
+        -144
       ],
       "id": "0d4bf4c8-9aeb-48bb-8d07-fb36a0ad1d86",
       "name": "Extract Information from Email1"
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $('Details').item.json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -80,
+        48
+      ],
+      "id": "1069dd85-a777-4584-8d71-111eba593edf",
+      "name": "Mark a message as read",
+      "webhookId": "46028c6a-0f10-4125-b9c3-cc6b6e65e9af",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1mqqwkXixpUMU3z0",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=/home/node/demo/{{ $binary.data.fileName }}",
+        "dataPropertyName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        -144
+      ],
+      "id": "92b5651a-3dca-43ce-aade-b347622ad50e",
+      "name": "Read/Write Files from Disk2"
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "=attachment.attachment_0.data",
+        "options": {
+          "fileName": "={{ $json.id }}.{{ $json.attachment.attachment_0.fileExtension }}",
+          "mimeType": "={{ $json.attachment.attachment_0.mimeType }}"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -304,
+        -144
+      ],
+      "id": "75a46526-e69d-46c2-8b7d-d39a4af6d495",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "operation": "markAsRead",
+        "messageId": "={{ $('Details').item.json.id }}"
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        592,
+        -192
+      ],
+      "id": "2fadb523-9c29-46cc-9db0-e053982a82d0",
+      "name": "Mark a message as read1",
+      "webhookId": "46028c6a-0f10-4125-b9c3-cc6b6e65e9af",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "1mqqwkXixpUMU3z0",
+          "name": "Gmail account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -556,7 +644,7 @@
       "main": [
         [
           {
-            "node": "Describe Image",
+            "node": "Convert to File1",
             "type": "main",
             "index": 0
           }
@@ -586,6 +674,11 @@
         [
           {
             "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Mark a message as read",
             "type": "main",
             "index": 0
           }
@@ -632,6 +725,33 @@
             "node": "Edit Fields",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Mark a message as read1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk2": {
+      "main": [
+        [
+          {
+            "node": "Describe Image",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -641,7 +761,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "93f31264-41b6-4114-9d26-ac23b2a1675f",
+  "versionId": "3cacdde1-dcb2-461e-838f-1bc8bb60d088",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"
