@@ -15,9 +15,12 @@
 - ✅ Control bot to review and approve updates to DB
 
 
-## 📊 Performance Results (Average Time per Email Creation – 17 Data Requests)
+## 📊 Performance Results (Average Time per Email Creation)
+
+### Email Generation
 
 The table below shows the average time taken to generate an email across various hardware setups, comparing two configurations: `Gemma3N e2b` and `Gemma3N e4b`.
+This was done with 17 data requests, in difference devices with similar n8n and ollama versions
 
 | Hardware / Config    | e2b (seconds) | e4b (seconds) |
 |----------------------|---------------|---------------|
@@ -30,6 +33,20 @@ The table below shows the average time taken to generate an email across various
 
 ![N8N Preview for Email Creation](screenshots/n8n_speedtest_prepare_Email.png)
 
+
+### Email Processing (With and Without Attachments)
+
+This table shows the average time taken to generate emails with and without attachments across two MacBook models.
+
+| Hardware             | e2b (s) | e4b (s) | e2b + Attachments (s) | e4b + Attachments (s) |
+|----------------------|---------|---------|------------------------|------------------------|
+| MacBook Air (M3)     | 2.10    | 3.32    | 6.49                   | 9.67                   |
+| MacBook Pro (M3 Pro) | 2.32    | 3.41    | 5.94                   | 8.01                   |
+
+> 📌 **Observation:** While both models perform similarly without attachments, the **MacBook Pro (M3 Pro)** handles attachments significantly faster than the MacBook Air, showcasing its performance advantage under heavier processing.
+
+
+![N8N Previous for Email Processing](screenshots/n8n_speedtest_EmailProcess.png)
 
 ---
 

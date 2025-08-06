@@ -125,6 +125,12 @@
               "name": "attachment",
               "value": "={{ $('Loop Over Items').item.json.attachment }}",
               "type": "string"
+            },
+            {
+              "id": "f19e557e-5120-432f-bf94-d7040d92fc78",
+              "name": "duration",
+              "value": "={{ $json.duration }}",
+              "type": "number"
             }
           ]
         },
@@ -459,6 +465,12 @@
               "name": "attachment",
               "value": "={{ $('Loop Over Items').item.json.attachment }}",
               "type": "string"
+            },
+            {
+              "id": "7f06cf51-71e7-41b5-9a2a-e2a156f291cc",
+              "name": "duration",
+              "value": "={{ $json.duration }}",
+              "type": "number"
             }
           ]
         },
@@ -472,6 +484,35 @@
       ],
       "id": "733b4f5c-4349-477d-a9a2-e910c57fa736",
       "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "xlsx",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1664,
+        -256
+      ],
+      "id": "e131e263-77c4-4ae2-9fd2-b5aede978304",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/home/node/demo/data_process.xlsx",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1888,
+        -336
+      ],
+      "id": "42c0dd1c-6c13-452f-9a54-1274c2b0e986",
+      "name": "Read/Write Files from Disk3"
     }
   ],
   "pinData": {},
@@ -514,6 +555,11 @@
         [
           {
             "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Convert to File1",
             "type": "main",
             "index": 0
           }
@@ -654,13 +700,24 @@
           }
         ]
       ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "4a9e8f44-3072-4ab3-8a64-657387cad1fe",
+  "versionId": "24fe53db-6cfe-4018-944d-f29adb48d361",
   "meta": {
     "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"
   },

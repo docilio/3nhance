@@ -26,7 +26,7 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.1,
       "position": [
-        1120,
+        1328,
         -128
       ],
       "id": "a20ca987-1d85-48f1-a823-3881bc24d6e2",
@@ -34,7 +34,7 @@
     },
     {
       "parameters": {
-        "model": "gemma3n:latest",
+        "model": "gemma3n:e2b",
         "options": {
           "temperature": 0.2
         }
@@ -42,8 +42,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
       "typeVersion": 1,
       "position": [
-        1216,
-        96
+        1248,
+        80
       ],
       "id": "acda17e5-bd35-4ae4-85ac-a345f4d9170f",
       "name": "Ollama Chat Model",
@@ -69,6 +69,12 @@
               "name": "output",
               "value": "={{ $json.output.split(\"```json\")[1].split(\"```\")[0].parseJson() }}",
               "type": "array"
+            },
+            {
+              "id": "d6ffdfd9-a3d1-40d9-98dd-16132b8cb62e",
+              "name": "duration",
+              "value": "={{ Date.now() - $('Edit Fields1').item.json.starttime }}",
+              "type": "number"
             }
           ]
         },
@@ -77,7 +83,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        1520,
+        1728,
         -128
       ],
       "id": "b9230ec8-0dfc-41e8-acc8-fede66afda22",
@@ -91,7 +97,7 @@
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
       "position": [
-        224,
+        432,
         -128
       ],
       "id": "1dfacc17-5032-41e7-b6fb-00886f94f145",
@@ -104,7 +110,7 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        448,
+        656,
         -128
       ],
       "id": "370c757b-d421-4af3-8342-a96b719b5f3d",
@@ -137,7 +143,7 @@
       "type": "n8n-nodes-base.filter",
       "typeVersion": 2.2,
       "position": [
-        672,
+        880,
         -128
       ],
       "id": "95943c4b-11f8-4b4f-8d51-69bf5227a0eb",
@@ -150,11 +156,34 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        896,
+        1104,
         -128
       ],
       "id": "328f00d5-a3fe-4585-ab8e-b4158156ed75",
       "name": "Code"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "21322e69-354a-4aeb-920a-0574ebb55543",
+              "name": "starttime",
+              "value": "={{ Date.now() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        -128
+      ],
+      "id": "4393c2e3-fbb6-439a-aef0-7c8336f38a65",
+      "name": "Edit Fields1"
     }
   ],
   "pinData": {},
@@ -163,7 +192,7 @@
       "main": [
         [
           {
-            "node": "Read/Write Files from Disk",
+            "node": "Edit Fields1",
             "type": "main",
             "index": 0
           }
@@ -235,13 +264,24 @@
           }
         ]
       ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "8378ff92-fb0b-4e89-bc80-f85057f7de97",
+  "versionId": "e27210c9-19d1-48f6-9e97-8fef41c71a2c",
   "meta": {
     "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"
   },
