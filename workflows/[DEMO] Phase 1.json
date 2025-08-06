@@ -179,7 +179,7 @@
       "type": "n8n-nodes-base.executeWorkflow",
       "typeVersion": 1.2,
       "position": [
-        320,
+        528,
         384
       ],
       "id": "e4048bd5-8a73-469d-935c-19665792fee9",
@@ -206,6 +206,12 @@
               "name": "email",
               "value": "={{ $json.data }}",
               "type": "string"
+            },
+            {
+              "id": "eda6495c-bd7f-4b98-83a3-5c01aba03f64",
+              "name": "duration",
+              "value": "={{ $('RecordStartTime').item.json.starttime - Date.now() }}",
+              "type": "number"
             }
           ]
         },
@@ -214,7 +220,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        544,
+        752,
         384
       ],
       "id": "fc148665-6b0b-4ca8-8516-b45d85cb4db6",
@@ -228,7 +234,7 @@
       "type": "n8n-nodes-base.convertToFile",
       "typeVersion": 1.1,
       "position": [
-        320,
+        528,
         192
       ],
       "id": "fe22acca-1a6e-467b-b004-9e06ab664942",
@@ -243,7 +249,7 @@
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
       "position": [
-        544,
+        752,
         192
       ],
       "id": "50203a93-ddd3-450d-aea3-8480fecd2cdf",
@@ -313,7 +319,7 @@
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
       "position": [
-        768,
+        976,
         384
       ],
       "id": "d3132ea6-6347-4abc-8c22-a8604beb55f8",
@@ -365,6 +371,12 @@
               "name": "time",
               "value": "={{ $now.format('hh:mm:ss @ dd-MM-yyyy') }}",
               "type": "string"
+            },
+            {
+              "id": "c3e9ad46-4751-44c0-adcd-0705d906cd3d",
+              "name": "duration",
+              "value": "={{ $('Edit Fields').item.json.duration }}",
+              "type": "number"
             }
           ]
         },
@@ -373,11 +385,34 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        992,
-        456
+        1200,
+        464
       ],
       "id": "8b8a4657-1471-4912-9485-1b8be9560cf5",
       "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9d69522c-a53a-49d5-ae35-1d8f7c3f9bf8",
+              "name": "starttime",
+              "value": "={{ Date.now() }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        320,
+        432
+      ],
+      "id": "686d22e0-934d-4203-bb7a-46b5caed6c16",
+      "name": "RecordStartTime"
     }
   ],
   "pinData": {},
@@ -459,7 +494,7 @@
         ],
         [
           {
-            "node": "Draft_Email",
+            "node": "RecordStartTime",
             "type": "main",
             "index": 0
           }
@@ -553,13 +588,24 @@
           }
         ]
       ]
+    },
+    "RecordStartTime": {
+      "main": [
+        [
+          {
+            "node": "Draft_Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "0035197d-a39b-482a-8ad8-2faa5fafa100",
+  "versionId": "98d12746-fa80-4153-8cc2-9ef79b081193",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"
