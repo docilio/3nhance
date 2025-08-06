@@ -15,6 +15,19 @@
 - ✅ Control bot to review and approve updates to DB
 
 
+## 📊 Performance Results (Average Time per Email Creation – 17 Data Requests)
+
+The table below shows the average time taken to generate an email across various hardware setups, comparing two configurations: `Gemma3N e2b` and `Gemma3N e4b`.
+
+| Hardware / Config    | e2b (seconds) | e4b (seconds) |
+|----------------------|---------------|---------------|
+| Mac Mini (M4 Pro)    | 2.91          | 4.51          |
+| MacBook Pro (M3 Pro) | 3.23          | 4.92          |
+| MacBook Air (M3)     | 2.96          | 4.66          |
+| MiniPC (Intel N100)  | 35.4          | N/A           |
+
+> ℹ️ *Note: "N/A" indicates the configuration was not tested on that device.*
+
 ---
 
 ## Current Status

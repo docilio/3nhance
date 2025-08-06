@@ -206,6 +206,12 @@
               "name": "email",
               "value": "={{ $json.data }}",
               "type": "string"
+            },
+            {
+              "id": "93459782-12c4-4108-97c1-2f40b2228b9c",
+              "name": "duration",
+              "value": "={{ $json.duration }}",
+              "type": "number"
             }
           ]
         },
@@ -458,7 +464,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "c9330475-b474-43b8-805d-86ae6cb0720d",
+  "versionId": "a5109b34-084f-4748-8759-d2002077f92c",
   "meta": {
     "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"
   },

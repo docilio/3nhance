@@ -18,15 +18,15 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Based on this information:\n\n{{ $('When Executed by Another Workflow').item.json.user.toJsonString() }}\n\nCreate an email to request the missing fields (without signature). Do not add anything else besides JSON:\n{\n  subject: emailsubject,\n  email: content without signature\n}",
+        "text": "=Based on this information:\n\n{{ $json.user.toJsonString() }}\n\nCreate an email to {{$json.user.email}} request to their missing fields (without signature). Do not add anything else besides JSON:\n{\n  subject: emailsubject,\n  email: content without signature\n}",
         "options": {
-          "systemMessage": "={{ $json.data }}"
+          "systemMessage": "={{ $json.context }}"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2.1,
       "position": [
-        624,
+        432,
         0
       ],
       "id": "beda22a0-dd3a-4cbf-b1a9-0f511c32a23a",
@@ -34,7 +34,7 @@
     },
     {
       "parameters": {
-        "model": "gemma3n:latest",
+        "model": "gemma3n:e2b",
         "options": {
           "temperature": 0.2
         }
@@ -42,8 +42,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
       "typeVersion": 1,
       "position": [
-        624,
-        192
+        416,
+        224
       ],
       "id": "cc6c9a49-8302-4599-8e56-1d4a4cd7aee2",
       "name": "Ollama Chat Model",
@@ -63,6 +63,12 @@
               "name": "output",
               "value": "={{ $json.output.split(\"```json\")[1].split(\"```\")[0].parseJson() }}",
               "type": "object"
+            },
+            {
+              "id": "70d751d4-0c4d-4ff4-972d-86db72b1052d",
+              "name": "duration",
+              "value": "={{ Date.now() - $('Edit Fields1').item.json.starttime }}",
+              "type": "number"
             }
           ]
         },
@@ -71,7 +77,7 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        976,
+        832,
         0
       ],
       "id": "635a328c-c2fd-4d93-8ebd-514f698581df",
@@ -86,7 +92,7 @@
       "type": "n8n-nodes-base.markdown",
       "typeVersion": 1,
       "position": [
-        1184,
+        1056,
         0
       ],
       "id": "6bc3dbd3-dce3-4cac-87b9-bde7969e17e4",
@@ -94,31 +100,32 @@
     },
     {
       "parameters": {
-        "fileSelector": "/home/node/demo/context.txt",
+        "assignments": {
+          "assignments": [
+            {
+              "id": "114a0af7-4730-4737-a0ac-95abd358d055",
+              "name": "starttime",
+              "value": "={{ Date.now() }}",
+              "type": "number"
+            },
+            {
+              "id": "9e2ada11-7aba-42f5-8d15-cad21aaae3d8",
+              "name": "user",
+              "value": "={{ $json.user }}",
+              "type": "object"
+            }
+          ]
+        },
         "options": {}
       },
-      "type": "n8n-nodes-base.readWriteFile",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
       "position": [
         208,
         0
       ],
-      "id": "98507d72-f4ee-4056-96d6-fa4f845eb287",
-      "name": "Read/Write Files from Disk"
-    },
-    {
-      "parameters": {
-        "operation": "text",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.extractFromFile",
-      "typeVersion": 1,
-      "position": [
-        416,
-        0
-      ],
-      "id": "24c3b2dd-273e-4b83-a306-a922f6eeab52",
-      "name": "Extract from File"
+      "id": "06f226b3-6ff7-412a-9413-a6988d9cfa5f",
+      "name": "Edit Fields1"
     }
   ],
   "pinData": {
@@ -147,7 +154,7 @@
       "main": [
         [
           {
-            "node": "Read/Write Files from Disk",
+            "node": "Edit Fields1",
             "type": "main",
             "index": 0
           }
@@ -187,18 +194,7 @@
         ]
       ]
     },
-    "Read/Write Files from Disk": {
-      "main": [
-        [
-          {
-            "node": "Extract from File",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Extract from File": {
+    "Edit Fields1": {
       "main": [
         [
           {
@@ -214,7 +210,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "da133cc9-997a-4b37-860d-9be3d2d01f79",
+  "versionId": "c413562b-fbae-40da-958f-99ca26c8392e",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "061fbf063b4948f7663287693aacd3ca165021b2af8dfc4c32e26d9d89802289"
