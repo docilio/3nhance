@@ -69,6 +69,7 @@ This table shows the average time taken to generate emails with and without atta
 - *Email processing* based on user's reply (workflow)
 - (partial) usage of Gemma3 to interpret the image (inside the workflow)
 - (offline) Gemma3n is reading the image in python locally, but not as part of Ollama (yet) - Sample Code provided
+- (online) Demo using Gemma3n through Open Router
 
 ---
 
@@ -80,11 +81,14 @@ This table shows the average time taken to generate emails with and without atta
 
 2. ~~**Colab is not supporting the free load of Gemma3N, finding alternatives for the live demo.**~~  
    ✅ **Solved 5 AUG** – _Linking a PHP page with Local Ollama for Demo purpose_
+Link: https://tiagoc102.sg-host.com/
+
+![Demo Website](/demo/ConceptDemo.jpg)
 
 
 --- 
 
-##Context
+## Context
 
 This is part of Google Gemma 3n Hackathon
 
