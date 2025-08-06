@@ -1,0 +1,35 @@
+services:
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n            # Where the actual image is
+      - ~/n8n_shared:/home/node/n8n_shared  # Add this line to mount ~/n8n_shared
+      - ~/code/3nhance/demo:/home/node/demo # Add this line to link with your 3nhance project (demo folder)
+    networks:
+      - n8n_network
+    environment:
+      - N8N_PAYLOAD_SIZE_MAX=64000000
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_HOST=localhost
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - GENERIC_TIMEZONE=Asia/Dubai
+      - TZ=Asia/Dubai                       # You can change the default timezone here
+      # Enable community nodes as tools
+      - N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
+      - N8N_SECURE_COOKIE=false
+      - N8N_FILESYSTEM_LOCAL_DATA_FOLDER=/home/node
+
+
+volumes:
+  n8n_data:
+    external: true
+
+networks:
+  n8n_network:
+    driver: bridge
