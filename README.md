@@ -26,21 +26,24 @@
 - Workflow to process the email and export changes
 - Workflow to process Images in attachments
 - Merge between previous workflows and GMAIL for email send/read
+- Capture of the execution time for further data extract (and benchmark)
+
 
 ### Current usages of Gemma3N:
 - Python Code to generate fake data (one time)
 - Context Creation (one time)
 - *Email Generation* based on data gaps (workflow)
 - *Email processing* based on user's reply (workflow)
-- (partial) usage of Gemma3 to interpret the image
-- (offline) Gemma3n is reading the image in python locally, but not as part of Ollama (yet)
+- (partial) usage of Gemma3 to interpret the image (inside the workflow)
+- (offline) Gemma3n is reading the image in python locally, but not as part of Ollama (yet) - Sample Code provided
 
 ---
 
 ## Challenges
 
-> Ollama doesn't currently support Gemma3n image input. Updating the pipeline as-is (with Gemma3), and trying to find a work-around to use Gemma3n as well as part of the pipeline.
-> Colab is not supporting the free load of Gemma3N, finding alternatives for the live demo.
+- Ollama doesn't currently support Gemma3n image input. Updating the pipeline as-is (with Gemma3), and trying to find a work-around to use Gemma3n as well as part of the pipeline.
+
+- Colab is not supporting the free load of Gemma3N, finding alternatives for the live demo. [Solved 5 AUG - Linking a PHP page with Local Ollama for Demo purpose]
 
 
 --- 
