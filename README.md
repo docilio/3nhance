@@ -28,6 +28,9 @@ The table below shows the average time taken to generate an email across various
 
 > ℹ️ *Note: "N/A" indicates the configuration was not tested on that device.*
 
+![N8N Preview for Email Creation](screenshots/n8n_speedtest_prepare_Email.png)
+
+
 ---
 
 ## Current Status
