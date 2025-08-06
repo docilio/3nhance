@@ -72,11 +72,14 @@ This table shows the average time taken to generate emails with and without atta
 
 ---
 
-## Challenges
+## 🚧 Challenges
 
-- Ollama doesn't currently support Gemma3n image input. Updating the pipeline as-is (with Gemma3), and trying to find a work-around to use Gemma3n as well as part of the pipeline.
+1. **Ollama doesn't currently support Gemma3n image input.**  
+   _[Mitigation: Python code available]_  
+   Updating the pipeline as-is (with Gemma3), and trying to find a workaround to use Gemma3n as part of the pipeline.
 
-- Colab is not supporting the free load of Gemma3N, finding alternatives for the live demo. [Solved 5 AUG - Linking a PHP page with Local Ollama for Demo purpose]
+2. ~~**Colab is not supporting the free load of Gemma3N, finding alternatives for the live demo.**~~  
+   ✅ **Solved 5 AUG** – _Linking a PHP page with Local Ollama for Demo purpose_
 
 
 --- 
@@ -94,3 +97,7 @@ This is part of Google Gemma 3n Hackathon
 }
 
 
+### Next Steps
+
+Continue providing solutions using N8N and Ollama.
+Investigate the quality of the responses based on the model
